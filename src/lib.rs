@@ -45,6 +45,7 @@ impl Client {
     pub fn new<T: Into<String>, E: Into<String>>(
         endpoint: E,
         token: T,
+        timeout: Duration,
         #[cfg(feature = "cache")] cache_size: usize,
         #[cfg(feature = "cache")] expire_ttl: std::time::Duration,
     ) -> std::result::Result<Self, ClientError> {
@@ -60,6 +61,8 @@ impl Client {
             endpoint,
             client: reqwest::Client::builder()
                 .default_headers(headers)
+                .timeout(timeout)
+                .tcp_nodelay(true)
                 .build()?,
             #[cfg(feature = "cache")]
             cache: cache::new_cache(cache_size, expire_ttl.into()),

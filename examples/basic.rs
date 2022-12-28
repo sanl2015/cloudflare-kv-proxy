@@ -8,8 +8,14 @@ const TOKEN: &str = "YOUR-TOKEN";
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() {
-    let client = Client::new(ENDPOINT, TOKEN, 10, Duration::from_secs(120))
-        .expect("unable to build kv proxy client");
+    let client = Client::new(
+        ENDPOINT,
+        TOKEN,
+        Duration::from_secs(2),
+        10,
+        Duration::from_secs(120),
+    )
+    .expect("unable to build kv proxy client");
 
     // String
     let key: &str = "test_string";
